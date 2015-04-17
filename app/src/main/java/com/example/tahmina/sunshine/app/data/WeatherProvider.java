@@ -191,6 +191,7 @@ public class WeatherProvider extends ContentProvider {
             case WEATHER_WITH_LOCATION_AND_DATE:
             {
                 retCursor = getWeatherByLocationSettingAndDate(uri, projection, sortOrder);
+
                 break;
             }
             // "weather/*"
@@ -219,7 +220,10 @@ public class WeatherProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
+
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+
+      //  Log.d("TAMZ","Query Cursor :"+retCursor.getColumnName(1));
 
         return retCursor;
     }

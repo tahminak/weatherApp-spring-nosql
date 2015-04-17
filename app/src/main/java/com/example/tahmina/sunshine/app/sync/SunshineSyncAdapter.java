@@ -44,6 +44,9 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static final String LOCATION_QUERY_EXTRA = "lqe";
 
+
+    // Interval at which to sync with the weather, in milliseconds.
+    // 60 seconds (1 minute) * 180 = 3 hours
     public static final int SYNC_INTERVAL = 60*180;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
     private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
@@ -71,7 +74,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-        Log.v(LOG_TAG, "onPerformSync Called.");
+        Log.d(LOG_TAG, "onPerformSync Called.");
 
 
         String locationQuery = Utility.getPreferredLocation(getContext());
@@ -400,15 +403,15 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 Intent resultIntent = new Intent(context, MainActivity.class);
 
                 // The stack builder object will contain an artificial back stack for the
-// started Activity.
-// This ensures that navigating backward from the Activity leads out of
-// your application to the Home screen.
+                // started Activity.
+                // This ensures that navigating backward from the Activity leads out of
+                // your application to the Home screen.
 
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 
 
 
-// Adds the Intent that starts the Activity to the top of the stack
+                // Adds the Intent that starts the Activity to the top of the stack
                 stackBuilder.addNextIntent(resultIntent);
                 PendingIntent resultPendingIntent =
                         stackBuilder.getPendingIntent(
@@ -418,7 +421,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 mBuilder.setContentIntent(resultPendingIntent);
                 NotificationManager mNotificationManager =
                         (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-// mId allows you to update the notification later on.
+                // mId allows you to update the notification later on.
                 mNotificationManager.notify(WEATHER_NOTIFICATION_ID, mBuilder.build());
 
 

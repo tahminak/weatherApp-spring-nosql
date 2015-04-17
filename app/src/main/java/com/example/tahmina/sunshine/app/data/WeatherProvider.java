@@ -23,6 +23,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.util.Log;
 
 public class WeatherProvider extends ContentProvider {
 
@@ -69,6 +70,34 @@ public class WeatherProvider extends ContentProvider {
             WeatherContract.LocationEntry.TABLE_NAME +
                     "." + WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? AND " +
                     WeatherContract.WeatherEntry.COLUMN_DATE + " = ? ";
+
+
+
+
+    //CouchBase Lite implementation
+
+    WeatherCbDbHelper mWeatherCbDbHelper;
+
+
+    /*
+    Students: We've coded this for you.  We just create a new WeatherDbHelper for later use
+    here.
+    */
+    @Override
+    public boolean onCreate() {
+        try {
+            mOpenHelper = new WeatherDbHelper(getContext());
+
+            mWeatherCbDbHelper=new WeatherCbDbHelper(getContext());
+        } catch (Exception e) {
+            Log.e("TAMZ","Error in onCreate() WeatherProvider"+e.getMessage());
+        }
+
+
+        return true;
+    }
+
+
 
     private Cursor getWeatherByLocationSetting(Uri uri, String[] projection, String sortOrder) {
         String locationSetting = WeatherContract.WeatherEntry.getLocationSettingFromUri(uri);
@@ -143,14 +172,6 @@ public class WeatherProvider extends ContentProvider {
     }
 
     /*
-        Students: We've coded this for you.  We just create a new WeatherDbHelper for later use
-        here.
-     */
-    @Override
-    public boolean onCreate() {
-        mOpenHelper = new WeatherDbHelper(getContext());
-        return true;
-    }
 
     /*
         Students: Here's where you'll code the getType function that uses the UriMatcher.  You can
